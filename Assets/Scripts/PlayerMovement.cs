@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rig;
 
-    public float speed = 1;
+    public float speed = .75f;
 
     private bool facingRight = true;
 
@@ -43,10 +43,14 @@ public class PlayerMovement : MonoBehaviour
     {
 
         facingRight = !facingRight;
-        Vector3 scaler = transform.localScale;
-        scaler.x *= -1;
-        transform.localScale = scaler;
 
+        transform.Rotate(0f, 180f, 0f);
+
+    }
+
+    public bool getFacingRight()
+    {
+        return facingRight;
     }
 
 }
