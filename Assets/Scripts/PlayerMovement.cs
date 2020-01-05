@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    private Vector2 startPos;
     private Rigidbody2D rig;
 
-    public float speed = .75f;
+    private float speed;
 
     private bool facingRight = true;
 
@@ -15,10 +15,15 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
+        speed = .05f;
+        startPos = new Vector2(GetComponent<Transform>().position.x, GetComponent<Transform>().position.y);
     }
 
     // Update is called once per frame
-    void Update() { }
+    void Update()
+    { 
+
+    }
 
     //called a fixed amount of times, use for physics
     void FixedUpdate()
@@ -34,6 +39,15 @@ public class PlayerMovement : MonoBehaviour
         }else if (facingRight == true && moveInput < 0)
         {
             Flip();
+        }
+
+        if ((Input.GetKey("a") || Input.GetKey("d")) && speed <= 1f)
+        {
+            speed = speed + .10f;
+        }
+        else if (!(Input.GetKey("a") || Input.GetKey("d")))
+        {
+            speed = 0.0f;
         }
     }
 
@@ -51,6 +65,11 @@ public class PlayerMovement : MonoBehaviour
     public bool getFacingRight()
     {
         return facingRight;
+    }
+
+    public Vector2 getStartPos()
+    {
+        return startPos;
     }
 
 }

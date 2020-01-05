@@ -5,16 +5,17 @@ using UnityEngine;
 public class TeleportBall : MonoBehaviour
 {
 
-    public float speed;
+    private float speed;
     private bool teleOut;
-    private bool cooldown;
     private bool facingRight;
     private bool up;
+    private bool inAir;
     private Rigidbody2D rb;    
     public GameObject roboPrefab;
     private Transform roboPos;
     private PlayerMovement plMove;
     private Transform pos;
+    private CircleCollider2D coll;
 
 
     // Start is called before the first frame update
@@ -23,8 +24,10 @@ public class TeleportBall : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         pos = GetComponent<Transform>();
         teleOut = false;
-        cooldown = false;
+        inAir = false;
         plMove = roboPrefab.GetComponent<PlayerMovement>();
+        speed = .5f;
+        coll = GetComponent<CircleCollider2D>();
     }
 
     // Update is called once per frame
@@ -32,11 +35,12 @@ public class TeleportBall : MonoBehaviour
     {
 
         
-        if (Input.GetButtonDown("Fire1") && cooldown)
+        if (Input.GetButtonDown("Fire1") && coll.enabled)
         {
             //when teleported to, reset varibles
-            cooldown = false;
             teleOut = false;
+            coll.enabled = false;
+
         }
         else if (Input.GetButtonDown("Fire1"))
         {
@@ -54,10 +58,12 @@ public class TeleportBall : MonoBehaviour
             else if(!facingRight)
             {
                 
-                rb.velocity = new Vector2(speed * -1,rb.velocity.y);
+                rb.velocity = (-1 * transform.right) * speed;
             }
-            
+
+            inAir = !inAir;
             teleOut = !teleOut;
+            coll.enabled = true;
         }
         else if (!teleOut)
         {
@@ -79,7 +85,29 @@ public class TeleportBall : MonoBehaviour
             }
             
         }
-        
+
+        /*if (inAir && speed < 3f)
+        {
+            speed = speed + .01f;
+            if (up)
+            {
+                rb.velocity = transform.up * speed;
+            }
+            else if (facingRight)
+            {
+                rb.velocity = transform.right * speed;
+            }
+            else if (!facingRight)
+            {
+
+                rb.velocity = (-1 * transform.right) * speed;
+            }
+        } 
+        else
+        {
+            speed = .5f;
+        }*/
+
     }
 
     void fixedUpdate()
@@ -92,10 +120,11 @@ public class TeleportBall : MonoBehaviour
     {
         if (teleOut)
         {
-            if (thing.name != "Robo")
+            if (thing.name != "Robo" && thing.name != "Switch")
             {
                 rb.gravityScale = 0.5f;
                 rb.velocity = new Vector3(0, 0, 0);
+                inAir = !inAir;
             }
         }
     }

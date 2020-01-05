@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
-    Vector2 startPos = new Vector2(0,0);
+    Vector2 startPos;
     public GameObject roboPrefab;
 
     // Start is called before the first frame update
@@ -23,10 +23,10 @@ public class Spike : MonoBehaviour
     {
         if (hitInfo.name == "Robo")
         {
-
+            
             Transform roboPos = roboPrefab.GetComponent<Transform>();
 
-            roboPos.position = startPos;
+            roboPos.position = roboPrefab.GetComponent<PlayerMovement>().getStartPos();
 
         }
     }
