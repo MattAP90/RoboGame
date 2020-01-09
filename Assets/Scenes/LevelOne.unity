@@ -5841,6 +5841,22 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3499538697506141651}
   m_PrefabAsset: {fileID: 0}
+--- !u!70 &1171477260
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171477259}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.000076413155, y: 0.0004453957}
+  m_Size: {x: 0.049300194, y: 0.049300194}
+  m_Direction: 0
 --- !u!1001 &1219504397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7737,6 +7753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 213522661}
+  ballPrefab: {fileID: 1171477259}
 --- !u!61 &1477710773
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12343,6 +12360,23 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Offset.y
+      value: 0.003123492
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Radius
+      value: 0.022181123
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2395546321524395131, guid: 3ef4a601f65d9d04d9e38e74a9a282b2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3499538696376772290, guid: 3ef4a601f65d9d04d9e38e74a9a282b2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12402,21 +12436,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TeleportBall
-      objectReference: {fileID: 0}
-    - target: {fileID: 3499538696376772317, guid: 3ef4a601f65d9d04d9e38e74a9a282b2,
-        type: 3}
-      propertyPath: m_Offset.y
-      value: 0.003123492
-      objectReference: {fileID: 0}
-    - target: {fileID: 3499538696376772317, guid: 3ef4a601f65d9d04d9e38e74a9a282b2,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.022181123
-      objectReference: {fileID: 0}
-    - target: {fileID: 3499538696376772317, guid: 3ef4a601f65d9d04d9e38e74a9a282b2,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3499538696376772318, guid: 3ef4a601f65d9d04d9e38e74a9a282b2,
         type: 3}

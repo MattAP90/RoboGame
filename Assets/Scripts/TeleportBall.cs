@@ -15,7 +15,9 @@ public class TeleportBall : MonoBehaviour
     private Transform roboPos;
     private PlayerMovement plMove;
     private Transform pos;
-    private CircleCollider2D coll;
+    private CircleCollider2D cirColl;
+    private CapsuleCollider2D capColl;
+
 
 
     // Start is called before the first frame update
@@ -26,8 +28,9 @@ public class TeleportBall : MonoBehaviour
         teleOut = false;
         inAir = false;
         plMove = roboPrefab.GetComponent<PlayerMovement>();
-        speed = .5f;
-        coll = GetComponent<CircleCollider2D>();
+        speed = 1f;
+        cirColl = GetComponent<CircleCollider2D>();
+        capColl = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -35,11 +38,12 @@ public class TeleportBall : MonoBehaviour
     {
 
         
-        if (Input.GetButtonDown("Fire1") && coll.enabled)
+        if (Input.GetButtonDown("Fire1") && cirColl.enabled)
         {
             //when teleported to, reset varibles
             teleOut = false;
-            coll.enabled = false;
+            cirColl.enabled = false;
+            capColl.enabled = false;
 
         }
         else if (Input.GetButtonDown("Fire1"))
@@ -63,7 +67,8 @@ public class TeleportBall : MonoBehaviour
 
             inAir = !inAir;
             teleOut = !teleOut;
-            coll.enabled = true;
+            capColl.enabled = true;
+
         }
         else if (!teleOut)
         {
@@ -122,6 +127,7 @@ public class TeleportBall : MonoBehaviour
         {
             if (thing.name != "Robo" && thing.name != "Switch")
             {
+                cirColl.enabled = true;
                 rb.gravityScale = 0.5f;
                 rb.velocity = new Vector3(0, 0, 0);
                 inAir = !inAir;
