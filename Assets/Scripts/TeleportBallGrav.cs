@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeleportBall : MonoBehaviour
+public class TeleportBallGrav : MonoBehaviour
 {
 
     private float speed;
     private bool teleOut;
+    private bool canTeleport;
     private bool facingRight;
     private bool up;
-    private Rigidbody2D rb;    
+    private Rigidbody2D rb;
     public GameObject roboPrefab;
     private Transform roboPos;
     private PlayerMovement plMove;
@@ -17,13 +18,12 @@ public class TeleportBall : MonoBehaviour
     private CircleCollider2D cirColl;
     private CapsuleCollider2D capColl;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         pos = GetComponent<Transform>();
+        canTeleport = false;
         teleOut = false;
         plMove = roboPrefab.GetComponent<PlayerMovement>();
         speed = 1f;
@@ -35,11 +35,11 @@ public class TeleportBall : MonoBehaviour
     void Update()
     {
 
-
         if (Input.GetButtonDown("Fire2"))
         {
             //reset all variables and gravity if player retracts the ball
             teleOut = false;
+            canTeleport = false;
             cirColl.enabled = false;
             capColl.enabled = false;
             rb.gravityScale = 0f;
@@ -48,22 +48,27 @@ public class TeleportBall : MonoBehaviour
         {
             //when teleported to, reset varibles
             teleOut = false;
+            canTeleport = false;
             cirColl.enabled = false;
             capColl.enabled = false;
             rb.gravityScale = 0f;
         }
         else if (Input.GetButtonDown("Fire1"))
         {
+                        
             facingRight = plMove.getFacingRight();
             up = Input.GetKey("w");
+            rb.gravityScale = .1f;
             //fire ball
             if (up)
             {
                 rb.velocity = transform.up * speed;
+                
             }
             else if (facingRight)
             {
                 rb.velocity = transform.right * speed;
+                
             }
             else if (!facingRight)
             {
@@ -73,12 +78,14 @@ public class TeleportBall : MonoBehaviour
 
             teleOut = true;
             capColl.enabled = true;
+            canTeleport = true;
 
         }
         else if (!teleOut)
         {
             keepBallOnPlayer();
         }
+        
     }
 
     void fixedUpdate()
@@ -91,12 +98,11 @@ public class TeleportBall : MonoBehaviour
     {
         if (teleOut)
         {
-            
             if (thing.name != "Robo" && thing.name != "Switch")
             {
                 capColl.enabled = true;
                 cirColl.enabled = true;
-                rb.gravityScale = 0.5f;
+                rb.gravityScale = .5f;
                 rb.velocity = new Vector3(0, 0, 0);
             }
         }
@@ -123,8 +129,8 @@ public class TeleportBall : MonoBehaviour
         }
     }
 
-    public bool getTeleOut()
+    public bool getCanTeleport()
     {
-        return teleOut;
+        return canTeleport;
     }
 }

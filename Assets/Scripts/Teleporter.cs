@@ -5,24 +5,24 @@ using UnityEngine;
 public class Teleporter : MonoBehaviour
 {
 
-    private bool canShoot = true;
+    private bool canTeleport;
     public GameObject ballPrefab;
+
     private Transform pos;
 
     // Start is called before the first frame update
     void Start()
     {
-       
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        if (Input.GetButtonDown("Fire1") && canShoot)
-        {
-            canShoot = !canShoot;
-        }else if (Input.GetButtonDown("Fire1") && !canShoot)
+        //change based on what script we are using w/ Gravity or w/o gravity
+        //teleOut = ballPrefab.GetComponent<TeleportBall>().getTeleOut();
+        canTeleport = ballPrefab.GetComponent<TeleportBallGrav>().getCanTeleport();
+        if (Input.GetButtonDown("Fire1") && !canTeleport)
         {
             Teleport();
         }
@@ -32,13 +32,11 @@ public class Teleporter : MonoBehaviour
     //gets the position of the ball and teleports the player to that position
     void Teleport()
     {
+        
         Transform ballPos = ballPrefab.GetComponent<Transform>();
         Rigidbody2D ballRB = ballPrefab.GetComponent<Rigidbody2D>();
-        ballRB.gravityScale = 0f;
         pos = GetComponent<Transform>();
 
         pos.position = ballPos.position;
-
-        canShoot = !canShoot;
     }
 }
