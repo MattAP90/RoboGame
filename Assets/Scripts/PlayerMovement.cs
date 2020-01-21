@@ -41,9 +41,9 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
 
-        if ((Input.GetKey("a") || Input.GetKey("d")) && speed <= 1f)
+        if ((Input.GetKey("a") || Input.GetKey("d")) && speed <= .95f)
         {
-            speed = speed + .10f;
+            speed = speed + .05f;
         }
         else if (!(Input.GetKey("a") || Input.GetKey("d")))
         {

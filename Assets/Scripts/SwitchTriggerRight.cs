@@ -37,19 +37,21 @@ public class SwitchTriggerRight : MonoBehaviour
     //triggers when an object collides with the switch
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        if(hitInfo.name == "Robo" || (hitInfo.name == "TeleportBall" && ballRB.velocity.x == 0.0f))
+        if(hitInfo.name == "Robo" || (hitInfo.name == "TeleportBall" && !hitInfo.isTrigger && ballRB.velocity.x == 0.0f))
         {
             tilePos.position = newPos;
-            GetComponent<Transform>().position = switchPressPos;            
+            GetComponent<Transform>().position = switchPressPos;
+            tilePos.Rotate(0f, 0f, 180f);
         }
     }
 
     void OnTriggerExit2D(Collider2D hitInfo)
     {
-        if (hitInfo.name == "Robo" || hitInfo.name == "TeleportBall")
+        if (hitInfo.name == "Robo" || hitInfo.name == "TeleportBall" && !hitInfo.isTrigger)
         {
             tilePos.position = oldPos;
             GetComponent<Transform>().position = switchStartPos;
+            tilePos.Rotate(0f, 0f, 180f);
 
         }
     }

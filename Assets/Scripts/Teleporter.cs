@@ -21,8 +21,8 @@ public class Teleporter : MonoBehaviour
     {
         //change based on what script we are using w/ Gravity or w/o gravity
         //teleOut = ballPrefab.GetComponent<TeleportBall>().getTeleOut();
-        canTeleport = ballPrefab.GetComponent<TeleportBallGrav>().getCanTeleport();
-        if (Input.GetButtonDown("Fire1") && !canTeleport)
+        canTeleport = ballPrefab.GetComponent<TeleportBallGravPower>().getCanTeleport();
+        if (Input.GetButtonUp("Fire2") && canTeleport)
         {
             Teleport();
         }
