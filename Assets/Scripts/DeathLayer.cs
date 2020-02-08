@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spike : MonoBehaviour
+public class DeathLayer : MonoBehaviour
 {
     Vector2 startPos;
     public GameObject roboPrefab;

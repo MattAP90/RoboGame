@@ -6,6 +6,7 @@ public class TeleportBallGravPower : MonoBehaviour
 {
     private float speed;
     private float teleportTimer;
+    private bool ballCharging;
     private bool teleOut;
     private bool canTeleport;
     private bool facingRight;
@@ -28,6 +29,7 @@ public class TeleportBallGravPower : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         pos = GetComponent<Transform>();
         canTeleport = false;
+        ballCharging = false;
         teleOut = false;
         resetBallSpeed = new Vector3(0, 0, 0);
         plMove = roboPrefab.GetComponent<PlayerMovement>();
@@ -43,17 +45,24 @@ public class TeleportBallGravPower : MonoBehaviour
 
         if (Input.GetButton("Fire2") && teleOut)
         {
-            if (teleportTimer < 20f)
+            if (teleportTimer <= 20f)
             {
                 teleportTimer++;
+                ballCharging = true;
             }
             else
             {
                 canTeleport = true;
+                ballCharging = false;
             }
         }
 
-        if (Input.GetButtonUp("Fire2"))
+        if (Input.GetButtonUp("Fire2") && canTeleport)
+        {
+            roboPos.position = pos.position;
+            resetVariables();
+        }
+        else if (Input.GetButtonUp("Fire2"))
         {
             //when teleported to, reset varibles
             resetVariables();
@@ -83,6 +92,7 @@ public class TeleportBallGravPower : MonoBehaviour
         }
         else
         {
+            
             speed = 1f;
             fullCharge = false;
             charging = false;
@@ -103,7 +113,7 @@ public class TeleportBallGravPower : MonoBehaviour
                 capColl.enabled = true;
                 cirColl.enabled = true;
                 rb.gravityScale = .5f;
-                rb.velocity = resetBallSpeed;
+                
             }
         }
     }
@@ -133,11 +143,15 @@ public class TeleportBallGravPower : MonoBehaviour
     {
         facingRight = plMove.getFacingRight();
         up = Input.GetKey("w");
-        rb.gravityScale = .1f;
-        //fire ball
-        if (up)
+        rb.gravityScale = .2f;
+
+        if (up && facingRight)
         {
-            rb.velocity = transform.up * speed;
+            rb.velocity = new Vector3(.125f, 1, 0) * speed;
+
+        }else if (up && !facingRight)
+        {
+            rb.velocity = new Vector3(-.125f, 1, 0) * speed;
 
         }
         else if (facingRight)
@@ -160,6 +174,7 @@ public class TeleportBallGravPower : MonoBehaviour
     {
         teleOut = false;
         canTeleport = false;
+        ballCharging = false;
         cirColl.enabled = false;
         capColl.enabled = false;
         rb.gravityScale = 0f;
@@ -171,6 +186,11 @@ public class TeleportBallGravPower : MonoBehaviour
     public bool getCanTeleport()
     {
         return canTeleport;
+    }
+
+    public bool getBallCharging()
+    {
+        return ballCharging;
     }
 
     public bool getFullCharge()
