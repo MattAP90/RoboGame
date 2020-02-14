@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SwitchTriggerRight : MonoBehaviour
 {
-
     private Vector2 switchStartPos;
     private Vector2 switchPressPos;
-    private Vector3 newPos;
-    private Vector3 oldPos;
+    private Vector3 openPos;
+    private Vector3 closedPos;
+    private Vector3 tempPos;
     private Rigidbody2D ballRB;
+    private Rigidbody2D doorRB;
     private Transform doorPos;
-    private BoxCollider2D doorColl;
     public GameObject doorPrefab;
     public GameObject ballPrefab;
     
@@ -21,12 +21,13 @@ public class SwitchTriggerRight : MonoBehaviour
 
         ballRB = ballPrefab.GetComponent<Rigidbody2D>();
         doorPos = doorPrefab.GetComponent<Transform>();
-        doorColl = doorPrefab.GetComponent<BoxCollider2D>();
+        doorRB = doorPrefab.GetComponent<Rigidbody2D>();
 
         switchStartPos = new Vector2(GetComponent<Transform>().position.x, GetComponent<Transform>().position.y);
         switchPressPos = new Vector2(GetComponent<Transform>().position.x, GetComponent<Transform>().position.y - 0.04f);
-        oldPos = doorPos.position;
-        newPos = new Vector3(oldPos.x + 0.16f, oldPos.y, 0f);
+        closedPos = doorPos.position;
+        openPos = new Vector3(closedPos.x + 0.16f, closedPos.y, 0f);
+        tempPos = doorPos.position;
 
     }
 
@@ -36,15 +37,34 @@ public class SwitchTriggerRight : MonoBehaviour
         
     }
 
+    void FixedUpdate()
+    {
+        tempPos = doorPos.position;
+        if (tempPos.x > openPos.x || tempPos.x < closedPos.x)
+        {
+            doorRB.velocity = new Vector3(0, 0, 0);
+
+            if (tempPos.x > openPos.x)
+            {
+                doorPos.position = openPos;
+            }
+            else if (tempPos.x < closedPos.x)
+            {
+                doorPos.position = closedPos;
+            }
+        }
+
+        
+    }
+
     //triggers when an object collides with the switch
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
         if(hitInfo.name == "Robo" || (hitInfo.name == "TeleportBall" && !hitInfo.isTrigger))
         {
-            doorPos.position = newPos;
             GetComponent<Transform>().position = switchPressPos;
-            doorColl.enabled = false;
-            
+            doorRB.velocity = new Vector3(.8f, 0, 0);
+               
         }
     }
 
@@ -52,10 +72,8 @@ public class SwitchTriggerRight : MonoBehaviour
     {
         if (hitInfo.name == "Robo" || hitInfo.name == "TeleportBall" && !hitInfo.isTrigger)
         {
-            doorPos.position = oldPos;
+            doorRB.velocity = new Vector3(-.8f, 0, 0);
             GetComponent<Transform>().position = switchStartPos;
-            doorColl.enabled = true;
-
         }
     }
 }
